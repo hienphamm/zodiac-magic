@@ -1,4 +1,4 @@
-import {ChangeEventHandler} from 'react';
+import {ChangeEvent, ChangeEventHandler} from 'react';
 
 interface Option {
   label: string,
@@ -10,7 +10,7 @@ interface SelectProps {
   label: string,
   options: Option[]
   className?: string,
-  onChange?: ChangeEventHandler<HTMLSelectElement>
+  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 function Select(props: SelectProps) {
@@ -20,7 +20,7 @@ function Select(props: SelectProps) {
       <label htmlFor={id}
              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}:
       </label>
-      <select onChange={onChange} id={id}
+      <select name={id} onChange={onChange} id={id}
               className="border border-gray-300 text-sm rounded-lg focus:border-blue-500 block w-full p-2.5 h-11">
         {options.map((option) => (
           <option key={option.value} value={option.value}>{option.label}</option>

@@ -1,10 +1,10 @@
-import React, {ChangeEventHandler} from 'react';
+import React, {ChangeEvent} from 'react';
 
 interface DatepickerProps {
   id: string
   label: string
   className?: string
-  onChange?: ChangeEventHandler<HTMLInputElement>
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Datepicker(props: DatepickerProps) {
@@ -14,6 +14,7 @@ function Datepicker(props: DatepickerProps) {
       <label htmlFor={id}
              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}:</label>
       <input
+        name={id}
         onChange={onChange}
         type="date"
         className="border border-gray-300 text-sm rounded-lg focus:border-blue-500 block w-full p-2.5 h-11"

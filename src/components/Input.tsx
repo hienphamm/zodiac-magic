@@ -1,9 +1,9 @@
-import React, {ChangeEventHandler} from 'react';
+import React, {ChangeEvent} from 'react';
 
 interface InputProps {
   id: string,
   label?: string
-  onChange?: ChangeEventHandler<HTMLInputElement>
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   className?: string
 }
 
