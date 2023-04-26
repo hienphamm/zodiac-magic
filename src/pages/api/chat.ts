@@ -10,21 +10,17 @@ export const config = {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-
   const payload: OpenAIStreamPayload = {
-    model: 'gpt-3.5-turbo',
-    messages: 'hello',
+    model: 'text-davinci-003',
+    prompt: 'Giúp tôi xem tử vi, tôi tên là Nguyễn Hoàng Việt sinh ngày 17-12-1991',
     temperature: process.env.AI_TEMP ? parseFloat(process.env.AI_TEMP) : 0.7,
-    max_tokens: process.env.AI_MAX_TOKENS
-      ? parseInt(process.env.AI_MAX_TOKENS)
-      : 100,
+    max_tokens: 1000,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    stream: false,
+    stream: true,
     n: 1,
   }
-
   const stream = await OpenAIStream(payload)
   return new Response(stream)
 }
