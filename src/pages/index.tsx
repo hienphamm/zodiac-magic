@@ -65,6 +65,7 @@ export default function Home() {
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(information)
     })
 
     if (!response.ok) {
@@ -112,7 +113,7 @@ export default function Home() {
           <Button onClick={onSubmit} label={'Xem kết quả'} className={'flex items-end'}/>
         </div>
 
-        <Chat/>
+        <Chat message={gptResponse}/>
       </div>
     </main>
   )

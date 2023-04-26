@@ -2,7 +2,6 @@ import {createParser, ParsedEvent, ReconnectInterval,} from 'eventsource-parser'
 
 export interface OpenAIStreamPayload {
   model: string
-  messages: string
   temperature: number
   top_p: number
   frequency_penalty: number
@@ -12,6 +11,7 @@ export interface OpenAIStreamPayload {
   stop?: string[]
   user?: string
   n: number
+  prompt: string
 }
 
 export async function OpenAIStream(payload: OpenAIStreamPayload) {
@@ -49,7 +49,7 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
           }
           try {
             const json = JSON.parse(data)
-            const text = json.choices[0].delta?.content || ''
+            const text = json.choices[0].text || ''
             if (counter < 2 && (text.match(/\n/) || []).length) {
               // this is a prefix character (i.e., "\n\n"), do nothing
               return
