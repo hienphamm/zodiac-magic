@@ -17,6 +17,7 @@ function Input(props: InputProps) {
           </label>
       }
       <input
+        name={id}
         type="text"
         onChange={onChange}
         id={id}

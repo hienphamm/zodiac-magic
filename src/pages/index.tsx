@@ -39,14 +39,17 @@ const genders = [
 ]
 
 interface Information {
-  category: string,
+  category: number,
   birthday: string
-  gender: string
+  gender: number
   name: string
 }
 
 export default function Home() {
-  const [information, setInformation] = useState<Information>({} as Information);
+  const [information, setInformation] = useState<Information>({
+    category: 0,
+    gender: 0
+  } as Information);
   const [isLoading, setIsLoading] = useState(false);
   const [gptResponse, setGptResponse] = useState('')
 
@@ -110,7 +113,7 @@ export default function Home() {
           <Datepicker onChange={onChange} id={'birthday'} label={'Ngày sinh'}/>
           <Select onChange={onChange} id={'gender'} label={'Giới tính'} options={genders}/>
           <Input onChange={onChange} id={'name'} label={'Họ tên'}/>
-          <Button onClick={onSubmit} label={'Xem kết quả'} className={'flex items-end'}/>
+          <Button disable={isLoading} onClick={onSubmit} label={'Xem kết quả'} className={'flex items-end'}/>
         </div>
 
         <Chat message={gptResponse}/>
