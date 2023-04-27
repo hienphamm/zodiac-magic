@@ -1,10 +1,11 @@
 import {Inter} from 'next/font/google'
+import {ChangeEvent, FormEvent, useState} from "react";
+
 import Select from "@app/components/Select";
 import Datepicker from "@app/components/Datepicker";
 import Input from "@app/components/Input";
 import Button from "@app/components/Button";
 import Chat from "@app/components/Chat";
-import {ChangeEvent, useState} from "react";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -54,15 +55,17 @@ export default function Home() {
   const [gptResponse, setGptResponse] = useState('')
 
   const onChange = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const {name, value} = event.target
+    const {name, value} = event.target;
     setInformation({
       ...information,
       [name]: value
     })
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     setIsLoading(true)
+
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
@@ -85,21 +88,21 @@ export default function Home() {
     const decoder = new TextDecoder()
     let done = false
 
-    let lastMessage = ''
+    let message = ''
 
     while (!done) {
       const {value, done: doneReading} = await reader.read()
       done = doneReading
       const chunkValue = decoder.decode(value)
 
-      lastMessage = lastMessage + chunkValue
+      message = message + chunkValue
 
-      setGptResponse(lastMessage)
+      setGptResponse(message)
+      if (done) setIsLoading(false)
 
-      setIsLoading(false)
     }
   }
-
+  console.log(isLoading)
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
@@ -108,13 +111,14 @@ export default function Home() {
         <h1 className={'mb-4 font-bold text-xl'}>Xem tử vi - Thần số học - Chiêm tinh học sử dụng AI. Thách thức các
           loại thầy bói 😜
         </h1>
-        <div className={'flex w-440 gap-3 mb-4'}>
+
+        <form className={'flex w-440 gap-3 mb-4'} onSubmit={onSubmit}>
           <Select onChange={onChange} id={'category'} label={'Thể loại'} options={categories}/>
-          <Datepicker onChange={onChange} id={'birthday'} label={'Ngày sinh'}/>
+          <Datepicker required onChange={onChange} id={'birthday'} label={'Ngày sinh'}/>
           <Select onChange={onChange} id={'gender'} label={'Giới tính'} options={genders}/>
-          <Input onChange={onChange} id={'name'} label={'Họ tên'}/>
-          <Button disable={isLoading} onClick={onSubmit} label={'Xem kết quả'} className={'flex items-end'}/>
-        </div>
+          <Input required onChange={onChange} id={'name'} label={'Họ tên'}/>
+          <Button disable={isLoading} htmlType={'submit'} label={'Xem kết quả'} className={'flex items-end'}/>
+        </form>
 
         <Chat message={gptResponse}/>
       </div>

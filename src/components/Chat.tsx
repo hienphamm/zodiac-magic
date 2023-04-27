@@ -9,7 +9,7 @@ function Chat(props: InputProps) {
 
   return (
     <div className={'mt-4'}>
-      <p className={'font-medium mb-2'}>Kết quả:</p>
+      <p className={'font-bold mb-2'}>Kết quả:</p>
       <div className={'w-full rounded-lg border border-gray-300 p-2 bg-slate-50 min-h-[70vh] overflow-auto'}>
         {message}
       </div>
